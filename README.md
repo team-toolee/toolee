@@ -1,4 +1,4 @@
-# toolee
+# Toolio
 
 > Coming Soon [put the logo]
 
@@ -38,7 +38,7 @@
 
 ## Authors
 * **Saurav Kadariya** - *Initial work* - [skadariya](https://github.com/skadariya)
-* **Kishor Pandey* - *Initial work* - [kishor](https://github.com/kishorpan2)
+* **Kishor Pandey** - *Initial work* - [kishor](https://github.com/kishorpan2)
 * **Osunkwo Williams** - *Initial work* - [wosunkwo](https://github.com/wosunkwo)
 * **Sudip Adhikari** - *Initial work* - [sudip](https://github.com/sadhikari07)
 * **Dough Klemp** - *Initial work* - [Dough](https://github.com/idothestamping)
