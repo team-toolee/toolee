@@ -1,0 +1,13 @@
+<header th:fragment="header(principal)" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="header-container">
+        <a id="header-logo" href="/"><h1><span class="purple">K</span><span class="blue">i</span><span class="green">d-d</span><span class="blue">o</span><span class="purple">h</span></h1></a>
+        <nav>
+            <a href="/profile">Profile</a>
+            <a href="/discover">Discover</a>
+            <a href="/tool/add">Add Tool</a>
+            <a href="/contact">Contact</a>
+            <a href="/logout">Logout</a>
+            <a href="/" th:text="${principal.getName()}"></a>
+        </nav>
+    </div>
+</header>

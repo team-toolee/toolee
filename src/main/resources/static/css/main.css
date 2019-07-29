@@ -1,0 +1,27 @@
+body {
+    min-height: 100%;
+    min-height: 100vh;
+    background: #e5e5e5;
+}
+
+.navbar {
+	background-color: #232f3e !important;
+	margin-bottom: 25px;
+}
+
+footer {
+    background-color: #232f3e !important;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main {
+    flex: 1 0 auto;
+}
+
+.footerfix {
+    min-height: calc(100vh - 140px)
+}
