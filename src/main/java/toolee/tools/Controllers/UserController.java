@@ -59,21 +59,23 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage() {
+    public String getLoginPage(Model m, Principal principal) {
+        m.addAttribute("principal", principal);
         return "login";
     }
 
     @PostMapping(value = "/login")
-    public RedirectView loginUsers(@RequestParam String username, String password) {
+    public RedirectView loginUsers(@RequestParam String username, String password, Model m, Principal principal) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new RedirectView("/user");
+        m.addAttribute("principal", principal);
+        return new RedirectView("profile");
     }
 
 
 
     @GetMapping("/profile")
-    public String getProfile(Model m, Principal principal){
+    public String getProfile(@RequestParam (required = false, defaultValue = "")String error, Model m, Principal principal){
         AppUser user = userRepository.findByUsername(principal.getName());
         m.addAttribute("profile", user);
         m.addAttribute("principal", principal);

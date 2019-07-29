@@ -8,8 +8,8 @@
           crossorigin="anonymous">
 </head>
 <body>
-    <div th:replace="${principal != null} ? ~{fragments/authHeader :: header(principal=${principal})} : ~{fragments/mainHeader:: header}"></div>
-    <div class="profile">
+<div th:replace="fragments/header :: header"></div>
+<div class="profile">
         <div class="container">
             <div class="row">
                 <div class="colmun">
