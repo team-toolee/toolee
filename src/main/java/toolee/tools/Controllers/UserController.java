@@ -1,10 +1,8 @@
 package toolee.tools.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import toolee.tools.Models.AppUser;
 import toolee.tools.Repositories.UserRepository;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +48,15 @@ public class UserController {
         List<AppUser> users = (List) userRepository.findAll();
         return users;
     }
+
+
+    @GetMapping("/profile")
+    public String getProfile(@PathVariable String username, Model m, Principal p){
+        AppUser a = userRepository.findByUsername(username);
+        m.addAttribute("userProfile", a);
+        return "userProfile";
+    }
+
 
 
 
