@@ -1,5 +1,10 @@
 package toolee.tools.Controllers;
 
+import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.MessageAttributeValue;
+import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.sns.model.PublishResult;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +16,7 @@ import toolee.tools.Models.Tool;
 import toolee.tools.Repositories.ToolRepository;
 import toolee.tools.Repositories.UserRepository;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 
 
 @Controller
@@ -63,5 +66,37 @@ public class UserController {
 
         return "discover";
     }
+
+    @PostMapping("/contact")
+    public String contactToolSeller(Model m, Principal p, long toolSellerId, long ToolId, String message){
+        Optional<AppUser> sellerOptional = userRepository.findById(toolSellerId);
+        AppUser seller = sellerOptional.get();
+
+
+
+        return "redirect:/discover";
+    }
+
+    //********************************************************************* Helper Functions ******************************************************************
+
+    //SNS function to help me send messages to a person once a task has been assigned
+    public static void configureMessage(String phoneNumber, String message) {
+        AmazonSNSClient snsClient = new AmazonSNSClient();
+        message = "A task has been assigned to you";
+        Map<String, MessageAttributeValue> smsAttributes =
+                new HashMap<>();
+        //<set SMS attributes>
+        sendSMSMessage(snsClient, message, phoneNumber, smsAttributes);
+    }
+
+    public static void sendSMSMessage(AmazonSNSClient snsClient, String message,
+                                      String phoneNumber, Map<String, MessageAttributeValue> smsAttributes) {
+        PublishResult result = snsClient.publish(new PublishRequest()
+                .withMessage(message)
+                .withPhoneNumber(phoneNumber)
+                .withMessageAttributes(smsAttributes));
+        System.out.println(result); // Prints the message ID.
+    }
+
 
 }
