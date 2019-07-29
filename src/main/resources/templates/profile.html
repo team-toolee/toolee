@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
 </head>
 <body>
-
+    <div th:replace="${principal != null} ? ~{fragments/authHeader :: header(principal=${principal})} : ~{fragments/mainHeader:: header}"></div>
+    <div class="profile">
+        <div class="container">
+            <div class="row">
+                <div class="colmun">
+                    <div class="userInfo">
+                        <div th:if="${principle != null}">
+                            <h3>Profile</h3>
+                            <p>Username: <span th:text="${principle.username}"></span></p>
+                            <p>Email   : <span th:text="${principle.email}"></span></p>
+                            <p>Phone   : <span th:text="${principle.phone}"></span></p>
+                            <p>City    : <span th:text="${principle.city}"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="colmun">
+                    <div class="userTools">
+                        <div th:if="${principle != null}">
+                            <div th:if="{principle.tools != null}">
+                                <h3>Tools</h3>
+                                <div th:each="tool : ${principle.tools}">
+                                    <div class="card" style="width: 18rem;">
+                                        <img class="card-img-top" th:src="${tool.imageUrl}" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><span th:text="${tool.name}"></span> </h4>
+                                            <p class="card-text"><span th:text="${tool.description}"></span></p>
+                                            <h4 class="card-title">Status: </h4>
+                                            <p class="card-text"><span th:text="${tool.status}"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
