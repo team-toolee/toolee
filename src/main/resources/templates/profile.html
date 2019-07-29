@@ -18,7 +18,7 @@
                             <h3>Profile</h3>
                             <p>Username: <span th:text="${principle.username}"></span></p>
                             <p>Email   : <span th:text="${principle.email}"></span></p>
-                            <p>Phone   : <span th:text="${principle.phone}"></span></p>
+                            <p>Phone   : <span th:text="${principle.phoneNumber}"></span></p>
                             <p>City    : <span th:text="${principle.city}"></span></p>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                 <div class="col">
                     <div class="userTools">
                         <div th:if="${principle">
-                            <div th:if="{principle.toos}">
+                            <div th:if="${principle.toos}">
                                 <h3>Tools</h3>
                                 <button type="submit" id="submit" class="btn btn-primary">Add New tool</button>
                                 <div th:each="tool : ${principle.tools}">
