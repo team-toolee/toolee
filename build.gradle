@@ -28,6 +28,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'
 	//rds postgres dependency
 	runtimeOnly 'org.postgresql:postgresql'
 }
