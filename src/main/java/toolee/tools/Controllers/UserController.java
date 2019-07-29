@@ -1,6 +1,8 @@
 package toolee.tools.Controllers;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,20 +11,27 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.view.RedirectView;
+import toolee.tools.Enums.Status;
 import toolee.tools.Models.AppUser;
+import toolee.tools.Models.Tool;
+import toolee.tools.Repositories.ToolRepository;
 import toolee.tools.Repositories.UserRepository;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
-
-@RestController
+@Controller
 public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ToolRepository toolRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -49,15 +58,42 @@ public class UserController {
         return users;
     }
 
+    @GetMapping("/login")
+    public String getLoginPage() {
+        return "login";
+    }
 
-    @GetMapping("/profile")
-    public String getProfile(@PathVariable String username, Model m, Principal p){
-        AppUser a = userRepository.findByUsername(username);
-        m.addAttribute("userProfile", a);
-        return "userProfile";
+    @PostMapping(value = "/login")
+    public RedirectView loginUsers(@RequestParam String username, String password) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(null, new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return new RedirectView("/user");
     }
 
 
+
+    @GetMapping("/profile")
+    public String getProfile(Model m, Principal principal){
+        AppUser user = userRepository.findByUsername(principal.getName());
+        m.addAttribute("profile", user);
+        m.addAttribute("principal", principal);
+        return "profile";
+    }
+
+
+    @PutMapping("tool/status/{id}")
+    public String updateStatus(@PathVariable Long id, Model m, Principal principal){
+        Optional<Tool> tool = toolRepository.findById(id);
+
+        if(tool.get().getStatus() == Status.Available){
+            tool.get().setStatus(Status.Rented);
+        }
+        else{
+            tool.get().setStatus(Status.Available);
+        }
+        toolRepository.save(tool.get());
+        return "profile";
+    }
 
 
 
