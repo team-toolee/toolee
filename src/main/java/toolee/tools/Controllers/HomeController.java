@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import toolee.tools.Models.AppUser;
 import toolee.tools.Repositories.UserRepository;
 
@@ -27,6 +29,12 @@ public class HomeController {
 
      public String[] cities = {"Seattle", "Spokane","Tacoma", "Vancouver","Bellevue", "Kent", "Everett", "Renton", "Federal Way", "Kirkland",
            "Auburn", "Shoreline"};
+
+//     Testing main page on main route, modify as needed
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index() {
+        return "discover";
+    }
 
     @GetMapping("/register")
     public String showRegistrationPage(Model m, Principal p){

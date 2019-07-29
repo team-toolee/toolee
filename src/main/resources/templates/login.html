@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kid-Doh</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <!--<link href="/main.css" rel="stylesheet" />-->
+</head>
+<body>
+<div th:replace="${principal != null} ? ~{fragments/authHeader :: header(principal=${principal})} : ~{fragments/mainHeader:: header}"></div>
+<main>
+    <form method="POST" action="/login" class="text-center">
+        <div class="form-group">
+            <input class="form-control text-center" type="text" placeholder="Enter username" name="username" />
+        </div>
+        <div class="form-group col-xs-4">
+            <input class="form-control text-center" type="password" placeholder="Enter password" name="password" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" >Log In </button>
+        </div>
+    </form>
+    <div class="text-center">
+        <p>If you haven't signed up yet, please click <a href="/register">here</a> to sign up.</p>
+    </div>
+</main>
+</body>
+</html>
