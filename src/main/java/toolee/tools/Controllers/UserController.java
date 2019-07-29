@@ -1,6 +1,9 @@
 package toolee.tools.Controllers;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.MessageAttributeValue;
+import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.sns.model.PublishResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,7 @@ import toolee.tools.Models.Tool;
 import toolee.tools.Repositories.ToolRepository;
 import toolee.tools.Repositories.UserRepository;
 import java.security.Principal;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,29 +43,9 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
 
-    @GetMapping("/discover")
-    public String getToolsForPrincipleCity(Model m, Principal p){
-        AppUser loggedInUser = userRepository.findByUsername(p.getName());
-        String userCity = loggedInUser.getCity();
-        List<AppUser> usersInCity = userRepository.findByCity(userCity);
-        List<Tool> toolsInCity = new ArrayList<>();
-
-        for(AppUser user: usersInCity){
-            for(Tool tool: user.getTools()){
-                toolsInCity.add(tool);
-            }
-        }
-
-        m.addAttribute("toolsInCity", toolsInCity);
-        m.addAttribute("principle", p);
-
-        return "discover";
-    }
-
     @GetMapping("/login")
-    public String getLoginPage(Model m, Principal principal) {
-        m.addAttribute("principal", principal);
-        return "login";
+    public String getLoginPage() {
+         return "login";
     }
 
     @PostMapping(value = "/login")
@@ -97,6 +81,25 @@ public class UserController {
         return "profile";
     }
 
+    @GetMapping("/discover")
+    public String getToolsForPrincipleCity(Model m, Principal p){
+        AppUser loggedInUser = userRepository.findByUsername(p.getName());
+        String userCity = loggedInUser.getCity();
+        List<AppUser> usersInCity = userRepository.findByCity(userCity);
+        List<Tool> toolsInCity = new ArrayList<>();
+
+        for(AppUser user: usersInCity){
+            for(Tool tool: user.getTools()){
+                toolsInCity.add(tool);
+            }
+        }
+
+        m.addAttribute("toolsInCity", toolsInCity);
+        m.addAttribute("principle", p);
+
+        return "discover";
+    }
+
     @PostMapping("/discover")
     public String getToolsForFilteredCity(Model m, Principal p, String city){
         List<AppUser> usersInCity = userRepository.findByCity(city);
@@ -115,6 +118,39 @@ public class UserController {
         return "discover";
     }
 
+    @PostMapping("/contact/{toolSellerId}/{toolId}/{message}")
+    public String contactToolSeller(@PathVariable String toolSellerId, @PathVariable String toolId, @PathVariable String message, Model m, Principal p){
+        long toolSellerIdLong = Long.valueOf(toolSellerId);
+        long toolIdLong = Long.valueOf(toolId);
+        AppUser seller = userRepository.findById(toolSellerIdLong).get();
+        Tool tool = toolRepository.findById(toolIdLong).get();
+        AppUser buyer = userRepository.findByUsername(p.getName());
 
-    //test
+        configureMessage(seller, buyer, tool, message);
+
+        return "redirect:/discover";
+    }
+
+    //********************************************************************* Helper Functions ******************************************************************
+
+    //SNS function to help me send messages to a person once a task has been assigned
+    public static void configureMessage(AppUser seller, AppUser buyer, Tool tool, String message) {
+        AmazonSNSClient snsClient = new AmazonSNSClient();
+        message = "Hello " +  seller.getUsername() + ", " + buyer.getUsername() + " is making an inquiry about your " + tool.getName()
+                + " with ID: " + tool.getId() + ". Please contact them at their phone number " + buyer.getPhoneNumber() + " or email address "
+                + buyer.getEmail() + " to further discuss this product.";
+        Map<String, MessageAttributeValue> smsAttributes =
+                new HashMap<>();
+        //<set SMS attributes>
+        sendSMSMessage(snsClient, message, seller.getPhoneNumber(), smsAttributes);
+    }
+
+    public static void sendSMSMessage(AmazonSNSClient snsClient, String message,
+                                      String phoneNumber, Map<String, MessageAttributeValue> smsAttributes) {
+        PublishResult result = snsClient.publish(new PublishRequest()
+                .withMessage(message)
+                .withPhoneNumber(phoneNumber)
+                .withMessageAttributes(smsAttributes));
+        System.out.println(result); // Prints the message ID.
+    }
 }
