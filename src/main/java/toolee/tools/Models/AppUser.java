@@ -15,7 +15,6 @@ public class AppUser implements UserDetails {
 
     @Column(unique = true)
     private String username;
-
     private String password;
     private String city;
     private String phoneNumber;

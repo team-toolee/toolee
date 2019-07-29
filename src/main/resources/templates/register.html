@@ -21,7 +21,8 @@
     <link href="/main.css" rel="stylesheet" />
 </head>
 <body>
-<div th:replace="${principal != null} ? ~{fragments/authHeader :: header(principal=${principal})} : ~{fragments/mainHeader:: header}"></div>
+<!--<div th:replace="${principal != null} ? ~{fragments/authHeader :: header(principal=${principal})} : ~{fragments/mainHeader:: header}"></div>-->
+<div th:replace="fragments/header :: header"></div>
 <main>
     <h1>Welcome to Toolio</h1>
     <!--alert-->
@@ -51,7 +52,9 @@
             <input class="form-control" id="phone" type="number" placeholder="5555555555"  required/>
         </div>
         <div th:if="${cities != null}">
-            <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city}"></option>
+            <select class= "form-control" name="type" for="city" placeholder="Select the city" required>
+                <option id="city" th:each="city : ${cities}" th:value="${city}" th:text="${city}"></option>
+            </select>
         </div>
         <!--alert based on password or conform password-->
         <div id="checkPasswordMatch"></div>

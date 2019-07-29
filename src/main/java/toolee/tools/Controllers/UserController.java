@@ -43,28 +43,9 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
 
-    @GetMapping("/discover")
-    public String getToolsForPrincipleCity(Model m, Principal p){
-        AppUser loggedInUser = userRepository.findByUsername(p.getName());
-        String userCity = loggedInUser.getCity();
-        List<AppUser> usersInCity = userRepository.findByCity(userCity);
-        List<Tool> toolsInCity = new ArrayList<>();
-
-        for(AppUser user: usersInCity){
-            for(Tool tool: user.getTools()){
-                toolsInCity.add(tool);
-            }
-        }
-
-        m.addAttribute("toolsInCity", toolsInCity);
-        m.addAttribute("principle", p);
-
-        return "discover";
-    }
-
     @GetMapping("/login")
     public String getLoginPage() {
-        return "login";
+         return "login";
     }
 
     @PostMapping(value = "/login")
@@ -99,6 +80,25 @@ public class UserController {
         return "profile";
     }
 
+    @GetMapping("/discover")
+    public String getToolsForPrincipleCity(Model m, Principal p){
+        AppUser loggedInUser = userRepository.findByUsername(p.getName());
+        String userCity = loggedInUser.getCity();
+        List<AppUser> usersInCity = userRepository.findByCity(userCity);
+        List<Tool> toolsInCity = new ArrayList<>();
+
+        for(AppUser user: usersInCity){
+            for(Tool tool: user.getTools()){
+                toolsInCity.add(tool);
+            }
+        }
+
+        m.addAttribute("toolsInCity", toolsInCity);
+        m.addAttribute("principle", p);
+
+        return "discover";
+    }
+
     @PostMapping("/discover")
     public String getToolsForFilteredCity(Model m, Principal p, String city){
         List<AppUser> usersInCity = userRepository.findByCity(city);
@@ -117,12 +117,15 @@ public class UserController {
         return "discover";
     }
 
-    @PostMapping("/contact")
-    public String contactToolSeller(Model m, Principal p, long toolSellerId, long ToolId, String message){
-        Optional<AppUser> sellerOptional = userRepository.findById(toolSellerId);
-        AppUser seller = sellerOptional.get();
+    @PostMapping("/contact/{toolSellerId}/{toolId}/{message}")
+    public String contactToolSeller(@PathVariable String toolSellerId, @PathVariable String toolId, @PathVariable String message, Model m, Principal p){
+        long toolSellerIdLong = Long.valueOf(toolSellerId);
+        long toolIdLong = Long.valueOf(toolId);
+        AppUser seller = userRepository.findById(toolSellerIdLong).get();
+        Tool tool = toolRepository.findById(toolIdLong).get();
+        AppUser buyer = userRepository.findByUsername(p.getName());
 
-
+        configureMessage(seller, buyer, tool, message);
 
         return "redirect:/discover";
     }
@@ -130,13 +133,15 @@ public class UserController {
     //********************************************************************* Helper Functions ******************************************************************
 
     //SNS function to help me send messages to a person once a task has been assigned
-    public static void configureMessage(String phoneNumber, String message) {
+    public static void configureMessage(AppUser seller, AppUser buyer, Tool tool, String message) {
         AmazonSNSClient snsClient = new AmazonSNSClient();
-        message = "A task has been assigned to you";
+        message = "Hello " +  seller.getUsername() + ", " + buyer.getUsername() + " is making an inquiry about your " + tool.getName()
+                + " with ID: " + tool.getId() + ". Please contact them at their phone number " + buyer.getPhoneNumber() + " or email address "
+                + buyer.getEmail() + " to further discuss this product.";
         Map<String, MessageAttributeValue> smsAttributes =
                 new HashMap<>();
         //<set SMS attributes>
-        sendSMSMessage(snsClient, message, phoneNumber, smsAttributes);
+        sendSMSMessage(snsClient, message, seller.getPhoneNumber(), smsAttributes);
     }
 
     public static void sendSMSMessage(AmazonSNSClient snsClient, String message,

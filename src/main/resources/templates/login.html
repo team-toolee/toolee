@@ -9,7 +9,7 @@
     <!--<link href="/main.css" rel="stylesheet" />-->
 </head>
 <body>
-<div th:replace="${principal != null} ? ~{fragments/authHeader :: header(principal=${principal})} : ~{fragments/mainHeader:: header}"></div>
+<div th:replace="fragments/header :: header"></div>
 <main>
     <form method="POST" action="/login" class="text-center">
         <div class="form-group">
