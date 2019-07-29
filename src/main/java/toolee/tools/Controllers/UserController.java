@@ -113,6 +113,5 @@ public class UserController {
         return "discover";
     }
 
-
     //test
 }
