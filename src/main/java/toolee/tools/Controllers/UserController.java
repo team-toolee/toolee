@@ -49,26 +49,26 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public RedirectView loginUsers(@RequestParam String username, String password, Model m, Principal principal) {
+    public RedirectView loginUsers(@RequestParam String username, String password, Model m, Principal principle) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        m.addAttribute("principal", principal);
+        m.addAttribute("principle", principle);
         return new RedirectView("profile");
     }
 
 
 
     @GetMapping("/profile")
-    public String getProfile(@RequestParam (required = false, defaultValue = "")String error, Model m, Principal principal){
-        AppUser user = userRepository.findByUsername(principal.getName());
+    public String getProfile(@RequestParam (required = false, defaultValue = "")String error, Model m, Principal principle){
+        AppUser user = userRepository.findByUsername(principle.getName());
         m.addAttribute("profile", user);
-        m.addAttribute("principal", principal);
+        m.addAttribute("principle", principle);
         return "profile";
     }
 
 
     @PutMapping("tool/status/{id}")
-    public String updateStatus(@PathVariable Long id, Model m, Principal principal){
+    public String updateStatus(@PathVariable Long id, Model m, Principal principle){
         Optional<Tool> tool = toolRepository.findById(id);
 
         if(tool.get().getStatus() == Status.Available){
