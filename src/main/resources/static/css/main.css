@@ -25,3 +25,11 @@ main {
 .footerfix {
     min-height: calc(100vh - 140px)
 }
+
+.mainheader {
+  display: flex;
+  flex-flow: row wrap;
+  /* This aligns items to the end line on main-axis */
+  justify-content: space-evenly;
+  margin: 25px 0px 35px 0px;
+}
