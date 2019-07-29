@@ -31,4 +31,7 @@ dependencies {
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'
 	//rds postgres dependency
 	runtimeOnly 'org.postgresql:postgresql'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.595'
+	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.585'
 }
