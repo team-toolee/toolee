@@ -5,7 +5,7 @@
                 <span style="font-style: italic;"></span></a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/main">Home</a></li>
+                <li><a href="/discover">Discover</a></li>
 
                 <fragment th:if="${principal}">
                     <li><a href="/discover">Discover</a></li>
@@ -18,7 +18,9 @@
             </ul>
         </div>
     </nav>
+
     <ul class="sidenav" id="mobile-demo">
+            <li><a href="/discover">Discover</a></li>
         <fragment th:if="${principal}">
             <li><a href="/discover">Discover</a></li>
             <li><a href="/profile">Profile</a></li>
@@ -26,4 +28,5 @@
             <li><a href="/logout">Logout</a></li>
         </fragment>
     </ul>
+
 </section>
