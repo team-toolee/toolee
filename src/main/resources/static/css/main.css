@@ -9,6 +9,10 @@ body {
 	margin-bottom: 25px;
 }
 
+footer {
+    background-color: #232f3e !important;
+}
+
 body {
     display: flex;
     min-height: 100vh;
@@ -16,4 +20,8 @@ body {
 }
 main {
     flex: 1 0 auto;
+}
+
+.footerfix {
+    min-height: calc(100vh - 140px)
 }
