@@ -21,13 +21,21 @@
         </div>
         <div class="form-group">
             <label for="toolPrice">Price</label>
-
-                <option th:each ="account: ${accountType}" th:selected="${editAccount.type} == ${account} ? true : false" th:text="${account}"></option>
-            </select>
+            <input type="text" th:value="${editTool.price}"  class= "form-control" name="name" id="toolPrice" required>
         </div>
         <div class="form-group">
-            <label for="accountBalance">Balance</label>
-            <input th:value="${editAccount.balance}" type="number" min="0" step="any" class= "form-control" name="balance" id="accountBalance" readonly>
+            <label for="toolStatus">Status</label>
+            <input type="text" th:value="${editTool.status}"  class= "form-control" name="name" id="toolStatus" required>
+        </div>
+        <div class="form-group">
+            <label for="toolDescription">Description</label>
+            <input type="text" th:value="${editTool.description}"  class= "form-control" name="name" id="toolDescription" required>
+        </div>
+        <div class="form-group">
+            <label for="toolCategory">Category</label>
+            <select class= "form-control" name="type" id="toolCategory" placeholder="Type of the account" required>
+                <option th:each ="category: ${categories}" th:selected="${editTool.category} == ${category} ? true : false" th:text="${category}"></option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary"> Update </button>
     </form>

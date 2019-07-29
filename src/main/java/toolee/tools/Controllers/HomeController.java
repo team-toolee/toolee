@@ -7,10 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import toolee.tools.Models.AppUser;
 import toolee.tools.Repositories.UserRepository;
 
@@ -37,9 +34,10 @@ public class HomeController {
     }
 
     @GetMapping("/register")
-    public String showRegistrationPage(Model m, Principal p){
+    public String showRegistrationPage(Model m, Principal p, @RequestParam(required = false, defaultValue = "")String error){
         m.addAttribute("principle", p);
         m.addAttribute("cities", cities);
+        m.addAttribute("error", "potato");
         return "register";
     }
 
