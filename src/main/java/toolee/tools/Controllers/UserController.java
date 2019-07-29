@@ -61,8 +61,8 @@ public class UserController {
     @GetMapping("/profile")
     public String getProfile(@RequestParam (required = false, defaultValue = "")String error, Model m, Principal principle){
         AppUser user = userRepository.findByUsername(principle.getName());
-        m.addAttribute("profile", user);
-        m.addAttribute("principle", principle);
+
+        m.addAttribute("principle",user);
         return "profile";
     }
 
