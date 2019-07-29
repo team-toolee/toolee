@@ -21,7 +21,7 @@
     <link href="/main.css" rel="stylesheet" />
 </head>
 <body>
-<!--<div th:replace="${principal != null} ? ~{fragments/authHeader :: header(principal=${principal})} : ~{fragments/mainHeader:: header}"></div>-->
+
 <div th:replace="fragments/header :: header"></div>
 <main>
     <h1>Welcome to Toolio</h1>
@@ -46,13 +46,13 @@
             <input class="form-control" id="conformPassword" type="password" placeholder="Re-Enter password"  />
         </div>
         <div class="form-group">
-            <input class="form-control" id="email" type="email" placeholder="John@Email.com"  required/>
+            <input class="form-control" id="email" type="email" name="email" placeholder="John@Email.com"  required/>
         </div>
         <div class="form-group">
-            <input class="form-control" id="phone" type="number" placeholder="5555555555"  required/>
+            <input class="form-control" id="phone" type="number" name="phoneNumber" placeholder="5555555555"  required/>
         </div>
         <div th:if="${cities != null}">
-            <select class= "form-control" name="type" for="city" placeholder="Select the city" required>
+            <select class= "form-control" name="city" for="city" placeholder="Select the city" required>
                 <option id="city" th:each="city : ${cities}" th:value="${city}" th:text="${city}"></option>
             </select>
         </div>
