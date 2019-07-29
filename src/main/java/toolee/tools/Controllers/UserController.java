@@ -152,5 +152,4 @@ public class UserController {
                 .withMessageAttributes(smsAttributes));
         System.out.println(result); // Prints the message ID.
     }
-
 }
