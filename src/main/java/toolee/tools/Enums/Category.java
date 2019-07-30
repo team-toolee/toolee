@@ -1,15 +1,25 @@
 package toolee.tools.Enums;
 
 public enum Category {
-    HomeImprovement,
-    HandTools,
-    PowerTools,
-    Hardware,
-    Equipments,
-    Accessories,
-    FloorAndSurfaceCare,
-    MeasuringAndMarking,
-    Plumbing,
-    Miscellaneous
-}
+    HomeImprovement("Home Improvement"),
+    HandTools("Hand Tools"),
+    PowerTools("Power Tools"),
+    Hardware("Hardware"),
+    Accessories("Accessories"),
+    FloorAndSurfaceCare("Floor and Surface"),
+    MeasuringAndMarking("Measuring and Marking"),
+    Plumbing("Plumbing"),
+    LawnAndGarden("Lawn and Garden"),
+    Miscellaneous("Miscellaneous");
+
+    private String categoryName;
+
+    Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getCategoryName() {
+        return this.categoryName;
+    }
+    }
 
