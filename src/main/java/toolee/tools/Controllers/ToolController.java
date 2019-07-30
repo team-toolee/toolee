@@ -45,15 +45,15 @@ public class ToolController {
         return "home";
     }
 
-    @GetMapping("tool/add")
-    public String addtool(Principal p, Model m)  {
-        Status[] statuses = Status.values();
-        Category[] categories = Category.values();
-        m.addAttribute("status", statuses);
-        m.addAttribute("categories", categories);
-        m.addAttribute("principal", p);
-        return "createTool";
-    }
+//    @GetMapping("/tool/add")
+//    public String addtool(Principal p, Model m)  {
+//        Status[] statuses = Status.values();
+//        Category[] categories = Category.values();
+//        m.addAttribute("status", statuses);
+//        m.addAttribute("categories", categories);
+//        m.addAttribute("principal", p);
+//        return "createTool";
+//    }
 
 
     @PostMapping("/tool/add")
@@ -67,7 +67,7 @@ public class ToolController {
         userRepository.save(user);
         toolRepository.save(newTool);
 
-        return "home";
+        return "profile";
     }
 
     @GetMapping("/tool/{id}/edit")
