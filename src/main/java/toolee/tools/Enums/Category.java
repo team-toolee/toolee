@@ -23,3 +23,6 @@ public enum Category {
     }
     }
 
+
+
+    //Reference: https://stackoverflow.com/questions/8389150/java-enum-elements-with-spaces
