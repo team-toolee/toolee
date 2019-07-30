@@ -19,19 +19,22 @@ public class Tool {
     private Category category;
 
     @ManyToOne
-    AppUser appUser;
+    private AppUser appUser;
 
     public Tool(){
     }
 
-    public Tool(String name, String imageUrl, double price, Status status, String description, Category category) {
+    public Tool(String name, String imageUrl, double price, Status status, String description, Category category,AppUser appUser) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.price = price;
         this.status = status;
         this.description = description;
         this.category = category;
+        this.setAppUser(appUser);
     }
+
+
 
     public long getId() {
         return id;
@@ -87,5 +90,13 @@ public class Tool {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 }
