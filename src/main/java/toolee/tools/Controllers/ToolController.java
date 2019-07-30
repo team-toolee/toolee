@@ -4,11 +4,9 @@ package toolee.tools.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 import toolee.tools.Config.S3Client;
 import toolee.tools.Enums.Category;
 import toolee.tools.Enums.Status;
@@ -19,6 +17,7 @@ import toolee.tools.Repositories.ToolRepository;
 import toolee.tools.Repositories.UserRepository;
 
 import javax.jws.WebParam;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -55,53 +54,57 @@ public class ToolController {
 //        return "createTool";
 //    }
 
-
+    @CrossOrigin
     @PostMapping("/tool/add")
-    public String addtool(@RequestParam String name, @RequestParam(value = "file")MultipartFile file, @RequestParam String price,
+    public RedirectView addtool(@RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
 
-                          @RequestParam String status, @RequestParam String description, String category, Principal p) throws IOException {
+                                @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p) throws IOException {
         String imageUrl = this.s3Client.uploadFile(file);
         AppUser user = userRepository.findByUsername(p.getName());
-        Tool newTool = new Tool(name, imageUrl, Double.parseDouble(price), Status.valueOf(status), description, Category.valueOf(category));
-        user.getTools().add(newTool);
+        Tool newTool = new Tool(name, imageUrl, Double.parseDouble(price), Status.valueOf(status), description, Category.valueOf(category),user);
         userRepository.save(user);
         toolRepository.save(newTool);
 
-        return "profile";
+        return new RedirectView("/profile");
     }
 
+    @CrossOrigin
     @GetMapping("/tool/{id}/edit")
     public String editAccount(@PathVariable long id, Model m, Principal p){
         //get the information for the selected account
         List<String> accountType = new ArrayList<>();
         Tool tool = toolRepository.findById(id).get();
         AppUser user = userRepository.findByUsername(p.getName());
+        Status[] statuses = Status.values();
+        Category[] categories = Category.values();
+        m.addAttribute("status", statuses);
+        m.addAttribute("categories", categories);
         m.addAttribute("principal", user);
         m.addAttribute("editTool", tool);
         //TO DO: need to create categories and cities
-        return "editAccount";
+        return "editTool";
     }
 
-    @PostMapping(value = "/account/{id}/edit")
-    public String editAccount(@RequestParam Long id, String name, String price, String status, String description, String category, Principal p, Model m) {
-        try {
-            Tool updatedTool = toolRepository.findById(id).get();
-            String message = "Successfully edited the tool: "+ name;
+    @PostMapping("/tool/{id}/edit")
+    public RedirectView editAccount(@RequestParam Long id, @RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
 
-            updatedTool.setName(name);
-            updatedTool.setDescription(description);
-            updatedTool.setPrice(Double.parseDouble(price));
-            updatedTool.setStatus(Status.valueOf(status));
-            updatedTool.setCategory(Category.valueOf(category));
-            toolRepository.save(updatedTool);
-            AppUser user = userRepository.findByUsername(p.getName());
-            m.addAttribute("principal",user);
-            m.addAttribute("message",message);
+    @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p) throws IOException {
+        String imageUrl;
+        AppUser user = userRepository.findByUsername(p.getName());
+        Tool editTool = toolRepository.findById(id).get();
 
-            return "profile";
-        } catch (Exception error) {
-            return "An error has occurred: " + error;
+        if(!file.isEmpty()){
+            imageUrl = this.s3Client.uploadFile(file);
+            editTool.setImageUrl(imageUrl);
         }
+        editTool.setName(name);
+        editTool.setPrice(Double.parseDouble(price));
+        editTool.setStatus(Status.valueOf(status));
+        editTool.setCategory(Category.valueOf(category));
+        editTool.setDescription(description);
+        toolRepository.save(editTool);
+
+        return new RedirectView("/profile");
     }
 
     @GetMapping("/tool/{id}/delete")
