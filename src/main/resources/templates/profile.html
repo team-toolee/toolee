@@ -8,37 +8,41 @@
           crossorigin="anonymous">
 </head>
 <body>
-    <div th:replace="${principal != null} ? ~{fragments/authHeader :: header(principal=${principal})} : ~{fragments/mainHeader:: header}"></div>
-    <div class="profile">
+<div th:replace="fragments/header :: header"></div>
+<div class="profile">
         <div class="container">
             <div class="row">
-                <div class="colmun">
+                <div class="col">
                     <div class="userInfo">
-                        <div th:if="${principle != null}">
+                        <div th:if="${principle}">
                             <h3>Profile</h3>
                             <p>Username: <span th:text="${principle.username}"></span></p>
                             <p>Email   : <span th:text="${principle.email}"></span></p>
-                            <p>Phone   : <span th:text="${principle.phone}"></span></p>
+                            <p>Phone   : <span th:text="${principle.phoneNumber}"></span></p>
                             <p>City    : <span th:text="${principle.city}"></span></p>
                         </div>
                     </div>
                 </div>
-                <div class="colmun">
+                <div class="col">
                     <div class="userTools">
-                        <div th:if="${principle != null}">
-                            <div th:if="{principle.tools != null}">
+
+                        <div th:if="${principle}">
+                            <div th:if="${principle.tools}">
                                 <h3>Tools</h3>
+                                <button type="submit" id="submit" class="btn btn-primary">Add New tool</button>
                                 <div th:each="tool : ${principle.tools}">
-                                    <div class="card" style="width: 18rem;">
-                                        <img class="card-img-top" th:src="${tool.imageUrl}" alt="Card image cap">
-                                        <div class="card-body">
-                                            <h4 class="card-title"><span th:text="${tool.name}"></span> </h4>
-                                            <p class="card-text"><span th:text="${tool.description}"></span></p>
-                                            <h4 class="card-title">Status: </h4>
-                                            <p class="card-text"><span th:text="${tool.status}"></span></p>
+                                        <div class="card" style="width: 18rem;">
+                                            <img class="card-img-top" th:src="${tool.imageUrl}" alt="Card image">
+                                            <div class="card-body">
+                                                <h4 class="card-title"><span th:text="${tool.name}"></span> </h4>
+                                                <p class="card-text"><span th:text="${tool.description}"></span></p>
+                                                <h4 class="card-title">Status: </h4>
+                                                <p class="card-text"><span th:text="${tool.status}"></span></p>
+                                                <a th:href="@{'/tool/' + ${tool.id} + '/edit'}"><button class="btn btn-primary">Edit Tool</button></a>
+                                                <a th:href="@{'/tool/' + ${tool.id} + '/delete'}"><button class="btn btn-danger">Delete Tool</button></a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
