@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.view.RedirectView;
+import toolee.tools.Enums.Category;
 import toolee.tools.Enums.Status;
 import toolee.tools.Models.AppUser;
 import toolee.tools.Models.Tool;
@@ -47,8 +48,11 @@ public class UserController {
     @GetMapping("/profile")
     public String getProfile(@RequestParam (required = false, defaultValue = "")String error, Model m, Principal principle){
         AppUser user = userRepository.findByUsername(principle.getName());
-
-        m.addAttribute("principle",user);
+        Status[] statuses = Status.values();
+        Category[] categories = Category.values();
+        m.addAttribute("status", statuses);
+        m.addAttribute("categories", categories);
+        m.addAttribute("principle", user);
         return "profile";
     }
 
