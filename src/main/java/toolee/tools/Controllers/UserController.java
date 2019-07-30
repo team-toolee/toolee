@@ -43,20 +43,6 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
 
-    @GetMapping("/login")
-    public String getLoginPage() {
-         return "login";
-    }
-
-    @PostMapping(value = "/login")
-    public RedirectView loginUsers(@RequestParam String username, String password, Model m, Principal principle) {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(null, new ArrayList<>());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        m.addAttribute("principle", principle);
-        return new RedirectView("profile");
-    }
-
-
 
     @GetMapping("/profile")
     public String getProfile(@RequestParam (required = false, defaultValue = "")String error, Model m, Principal principle){
