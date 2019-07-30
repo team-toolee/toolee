@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import toolee.tools.Models.AppUser;
 import toolee.tools.Repositories.UserRepository;
 
@@ -27,10 +28,23 @@ public class HomeController {
      public String[] cities = {"Seattle", "Spokane","Tacoma", "Vancouver","Bellevue", "Kent", "Everett", "Renton", "Federal Way", "Kirkland",
            "Auburn", "Shoreline"};
 
+    @GetMapping("/login")
+    public String getLoginPage() {
+        return "login";
+    }
+
+    @PostMapping(value = "/login")
+    public RedirectView loginUsers(@RequestParam String username, String password, Model m, Principal principle) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(null, new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        m.addAttribute("principle", principle);
+        return new RedirectView("profile");
+    }
+
 //     Testing main page on main route, modify as needed
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
-        return "discover";
+        return "home";
     }
 
     @GetMapping("/register")
