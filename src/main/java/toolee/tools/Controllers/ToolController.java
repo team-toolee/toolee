@@ -115,11 +115,11 @@ public class ToolController {
         AppUser user = userRepository.findByUsername(p.getName());
         m.addAttribute("principal", user);
         m.addAttribute("delTool", tool);
-        return "deleteAccount";
+        return "deleteTool";
     }
     @PostMapping("/tool/{id}/delete")
-    public String deleteTool(@RequestParam long id, Model m, Principal p,Integer temp){
-        try{
+    public RedirectView deleteTool(@RequestParam long id, Model m, Principal p,Integer temp){
+
             // to display information of selected account to be deleted
             Tool tool = toolRepository.findById(id).get();
             String message = "Successfully deleted the tool: "+ tool.getName();
@@ -131,10 +131,8 @@ public class ToolController {
             m.addAttribute("message",message);
 
 
-            return "profile";
-        } catch (Exception error){
-            return "An error has occurred: " + error;
-        }
+            return new RedirectView("/profile");
+
     }
 
 
