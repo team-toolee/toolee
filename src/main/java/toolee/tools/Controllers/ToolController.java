@@ -50,7 +50,7 @@ public class ToolController {
         Status[] statuses = Status.values();
         Category[] categories = Category.values();
         m.addAttribute("status", statuses);
-        m.addAttribute("category", categories);
+        m.addAttribute("categories", categories);
         m.addAttribute("principal", p);
         return "createTool";
     }
@@ -59,10 +59,10 @@ public class ToolController {
     @PostMapping("/tool/add")
     public String addtool(@RequestParam String name, @RequestParam(value = "file")MultipartFile file, @RequestParam String price,
 
-                          @RequestParam Status status, @RequestParam String description, Category category, Principal p) throws IOException {
+                          @RequestParam String status, @RequestParam String description, String category, Principal p) throws IOException {
         String imageUrl = this.s3Client.uploadFile(file);
         AppUser user = userRepository.findByUsername(p.getName());
-        Tool newTool = new Tool(name, imageUrl, Double.parseDouble(price), status, description, category);
+        Tool newTool = new Tool(name, imageUrl, Double.parseDouble(price), Status.valueOf(status), description, Category.valueOf(category));
         user.getTools().add(newTool);
         userRepository.save(user);
         toolRepository.save(newTool);
