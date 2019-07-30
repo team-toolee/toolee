@@ -6,6 +6,9 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -29,7 +32,7 @@
                         <div th:if="${principle}">
                             <div th:if="${principle.tools}">
                                 <h3>Tools</h3>
-                                <button type="submit" id="submit" class="btn btn-primary">Add New tool</button>
+                                <button class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add New tool</button>
                                 <div th:each="tool : ${principle.tools}">
                                         <div class="card" style="width: 18rem;">
                                             <img class="card-img-top" th:src="${tool.imageUrl}" alt="Card image">
@@ -50,5 +53,55 @@
             </div>
         </div>
     </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Tool</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 </div>
+                <div class="modal-body">
+                <form method="post" action="/tool/add">
+                <div class="form-group">
+                <label for="toolName">Tool Name</label>
+                <input type="text" placeholder="Tool Name"  class= "form-control" name="name" id="toolName" required>
+                </div>
+                <div class="form-group">
+                <label for="toolImg">Tool Image</label>
+                <input type="file" placeholder="Tool Image" class= "form-control" name="file" id="toolImg" required>
+                </div>
+                <div class="form-group">
+                <label for="toolPrice">Price</label>
+                <input type="number" placeholder="$" class= "form-control" name="price" id="toolPrice" required>
+                </div>
+                <div class="form-group">
+                <label for="toolStatus">Status</label>
+                <select class= "form-control" name="status" id="toolStatus" placeholder="Tool status" required>
+                <option th:each ="state: ${status}" th:text="${state}"></option>
+                </select>
+                </div>
+                <div class="form-group">
+                <label for="toolDescription">Description</label>
+                <input type="text" placeholder="Description"  class= "form-control" name="description" id="toolDescription" required>
+                </div>
+                <div class="form-group">
+                <label for="toolCategory">Category</label>
+                <select class= "form-control" name="category" id="toolCategory" placeholder="Type of the account" required>
+                <option th:each ="category: ${categories}"  th:text="${category}"></option>
+                </select>
+                </div>
+                </div>
+                <div class="modal-footer">
+
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
 </body>
 </html>

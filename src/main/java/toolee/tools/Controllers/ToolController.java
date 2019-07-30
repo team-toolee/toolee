@@ -45,29 +45,29 @@ public class ToolController {
         return "home";
     }
 
-    @GetMapping("tool/add")
-    public String addtool(Principal p, Model m)  {
-        Status[] statuses = Status.values();
-        Category[] categories = Category.values();
-        m.addAttribute("status", statuses);
-        m.addAttribute("category", categories);
-        m.addAttribute("principal", p);
-        return "createTool";
-    }
+//    @GetMapping("/tool/add")
+//    public String addtool(Principal p, Model m)  {
+//        Status[] statuses = Status.values();
+//        Category[] categories = Category.values();
+//        m.addAttribute("status", statuses);
+//        m.addAttribute("categories", categories);
+//        m.addAttribute("principal", p);
+//        return "createTool";
+//    }
 
 
     @PostMapping("/tool/add")
     public String addtool(@RequestParam String name, @RequestParam(value = "file")MultipartFile file, @RequestParam String price,
 
-                          @RequestParam Status status, @RequestParam String description, Category category, Principal p) throws IOException {
+                          @RequestParam String status, @RequestParam String description, String category, Principal p) throws IOException {
         String imageUrl = this.s3Client.uploadFile(file);
         AppUser user = userRepository.findByUsername(p.getName());
-        Tool newTool = new Tool(name, imageUrl, Double.parseDouble(price), status, description, category);
+        Tool newTool = new Tool(name, imageUrl, Double.parseDouble(price), Status.valueOf(status), description, Category.valueOf(category));
         user.getTools().add(newTool);
         userRepository.save(user);
         toolRepository.save(newTool);
 
-        return "home";
+        return "profile";
     }
 
     @GetMapping("/tool/{id}/edit")
