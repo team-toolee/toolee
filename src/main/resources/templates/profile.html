@@ -41,6 +41,7 @@
                                                 <p class="card-text"><span th:text="${tool.description}"></span></p>
                                                 <p class="card-text">Price: <span th:text="${tool.price}"></span></p>
                                                 <h4 class="card-title">Status: </h4>
+
                                                 <p class="card-text"><span th:text="${tool.status}"></span></p>
                                                 <a th:href="@{'/tool/' + ${tool.id} + '/edit'}"><button class="btn btn-primary">Edit Tool</button></a>
                                                 <a th:href="@{'/tool/' + ${tool.id} + '/delete'}"><button class="btn btn-danger">Delete Tool</button></a>
