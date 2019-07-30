@@ -16,8 +16,6 @@ import toolee.tools.Models.Tool;
 import toolee.tools.Repositories.ToolRepository;
 import toolee.tools.Repositories.UserRepository;
 
-import javax.jws.WebParam;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
 
