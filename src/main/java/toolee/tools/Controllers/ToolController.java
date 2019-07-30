@@ -18,6 +18,7 @@ import toolee.tools.Models.Tool;
 import toolee.tools.Repositories.ToolRepository;
 import toolee.tools.Repositories.UserRepository;
 
+import javax.jws.WebParam;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -42,6 +43,16 @@ public class ToolController {
         AppUser user = userRepository.findByUsername(p.getName());
         m.addAttribute("principal",user);
         return "home";
+    }
+
+    @GetMapping("tool/add")
+    public String addtool(Principal p, Model m)  {
+        Status[] statuses = Status.values();
+        Category[] categories = Category.values();
+        m.addAttribute("status", statuses);
+        m.addAttribute("category", categories);
+        m.addAttribute("principal", p);
+        return "createTool";
     }
 
 
