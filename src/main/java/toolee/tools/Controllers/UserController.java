@@ -53,7 +53,7 @@ public class UserController {
         m.addAttribute("status", statuses);
         m.addAttribute("categories", categories);
         m.addAttribute("principle", user);
-        return "profile";
+        return "profile2";
     }
 
 
@@ -68,7 +68,7 @@ public class UserController {
             tool.get().setStatus(Status.Available);
         }
         toolRepository.save(tool.get());
-        return "profile";
+        return "profile2";
     }
 
     @GetMapping("/discover")
