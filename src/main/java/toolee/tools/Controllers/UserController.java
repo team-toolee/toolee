@@ -53,7 +53,7 @@ public class UserController {
         m.addAttribute("status", statuses);
         m.addAttribute("categories", categories);
         m.addAttribute("principle", user);
-        return "profile2";
+        return "profile";
     }
 
     @GetMapping("/discover")

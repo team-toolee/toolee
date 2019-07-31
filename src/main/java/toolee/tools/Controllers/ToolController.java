@@ -145,7 +145,7 @@ public class ToolController {
             return "Accessories";
         }
         if (userInput.equals("Floor and Surface")) {
-            return "FloorAndSurface";
+            return "FloorAndSurfaceCare";
         }
         if (userInput.equals("Measuring and Marking")) {
             return "MeasuringAndMarking";
