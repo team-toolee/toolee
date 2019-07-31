@@ -46,18 +46,18 @@ public class UserController {
 
 
     @GetMapping("/profile")
-    public String getProfile(@RequestParam (required = false, defaultValue = "")String error, Model m, Principal principle){
-        AppUser user = userRepository.findByUsername(principle.getName());
+    public String getProfile(@RequestParam (required = false, defaultValue = "")String error, Model m, Principal principal){
+        AppUser user = userRepository.findByUsername(principal.getName());
         Status[] statuses = Status.values();
         Category[] categories = Category.values();
         m.addAttribute("status", statuses);
         m.addAttribute("categories", categories);
-        m.addAttribute("principle", user);
+        m.addAttribute("principal", user);
         return "profile";
     }
 
     @GetMapping("/discover")
-    public String getToolsForPrincipleCity(Model m, Principal p){
+    public String getToolsForprincipalCity(Model m, Principal p){
         AppUser loggedInUser = userRepository.findByUsername(p.getName());
         String userCity = loggedInUser.getCity();
         List<AppUser> usersInCity = userRepository.findByCity(userCity);
@@ -70,7 +70,7 @@ public class UserController {
         }
 
         m.addAttribute("toolsInCity", toolsInCity);
-        m.addAttribute("principle", p);
+        m.addAttribute("principal", p);
 
         return "discover";
     }
@@ -114,7 +114,7 @@ public class UserController {
         }
 
         m.addAttribute("toolsInCity", toolsInCity);
-        m.addAttribute("principle", p);
+        m.addAttribute("principal", p);
 
         return "discover";
     }

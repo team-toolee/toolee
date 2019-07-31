@@ -22,17 +22,17 @@
                 <option th:each ="category: ${categories}" th:text="${category.getCategoryName()}" th:value="${category.getCategoryName()}"></option>
             </select>
         </div>
-        <div id="allTools" class="col s12 m8 l8">
+        <div  class="col s12 m8 l8">
             <!--List of tools-->
-            <div class="row">
+            <div  class="row">
                 <div class="col s12 m8 l8">
                     <header class="site-header">
                         <h4>Discover Tools</h4>
                     </header>
-                    <div th:each="tool : ${toolsInCity}">
+                    <div  th:each="tool : ${toolsInCity}">
                         <div class="row">
                             <div class="col s12 m4">
-                                <div class="card">
+                                <div id="allTools" class="card">
                                     <div class="card-image">
                                         <img th:src="${tool.imageUrl}" alt="Card image">
                                     </div>
@@ -40,7 +40,7 @@
                                         <span class="card-title"><span th:text="${tool.name}"></span></span>
                                         <p><span th:text="${tool.description}"></span></p>
                                         <p><b>Status</b><span th:text="${tool.status}"></span></p>
-                                        <p>Category: <span th:text="${tool.category.getCategoryName()}"></span></p>
+                                        <p>Category: <span id="toolCategory" th:text="${tool.category.getCategoryName()}"></span></p>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +61,8 @@ $(document).ready(function(){
   $("#category").change(function() {
     var value = $(this).val();
     $("#allTools").filter(function() {
-      $(this).toggle($(this).text().indexOf(value) > -1)
+        var catVale = $("#toolCategory").
+      $(this).toggle($("#toolCategory").text().indexOf(value) > -1)
     });
   });
 });
