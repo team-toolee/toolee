@@ -38,3 +38,5 @@ dependencies {
 	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.585'
 	
 }
+
+bootJar { archiveFileName = 'application.jar'}
