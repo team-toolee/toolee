@@ -38,7 +38,7 @@
             </div>
             <div class="form-group">
                 <label for="toolCategory">Category</label>
-                <input type="text" th:value="${delTool.category}"  class= "form-control" name="name" id="toolCategory" readonly>
+                <input type="text" th:value="${delTool.category.getCategoryName()}"  class= "form-control" name="name" id="toolCategory" readonly>
             </div>
             <button type="submit" class="btn btn-danger"> Delete </button>
         </form>
