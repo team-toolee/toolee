@@ -22,11 +22,11 @@
                 <fieldset class="form__fields"id="page-info">
 
                     <article class="field">
-                        <div th:if="${principle}">
-                            <p>Username: </br><span th:text="${principle.username}" class="cardText"></span></p>
-                            <p>Email   : </br><span th:text="${principle.email}" class="cardText"></span></p>
-                            <p>Phone   : </br><span th:text="${principle.phoneNumber}" class="cardText"></span></p>
-                            <p>City    : </br><span th:text="${principle.city}" class="cardText"></span></p>
+                        <div th:if="${principal}">
+                            <p>Username: </br><span th:text="${principal.username}" class="cardText"></span></p>
+                            <p>Email   : </br><span th:text="${principal.email}" class="cardText"></span></p>
+                            <p>Phone   : </br><span th:text="${principal.phoneNumber}" class="cardText"></span></p>
+                            <p>City    : </br><span th:text="${principal.city}" class="cardText"></span></p>
                             <a class="waves-effect waves-light btn modal-trigger" href="#modal2">Add New tool</a>
                         </div>
                     </article>
@@ -39,7 +39,7 @@
                 <h4>Your Tools</h4>
             </header>
             <div class="row">
-            <div th:each="tool : ${principle.tools}">
+            <div th:each="tool : ${principal.tools}">
                     <div class="col s12 m4">
                         <div class="card">
                             <div class="card-image">

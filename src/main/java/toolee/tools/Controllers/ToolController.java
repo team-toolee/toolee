@@ -92,7 +92,7 @@ public class ToolController {
         Category[] categories = Category.values();
         m.addAttribute("status", statuses);
         m.addAttribute("categories", categories);
-        m.addAttribute("principle", user);
+        m.addAttribute("principal", user);
         m.addAttribute("message",message);
         return "profile";
     }
@@ -119,7 +119,7 @@ public class ToolController {
             Category[] categories = Category.values();
             m.addAttribute("status", statuses);
             m.addAttribute("categories", categories);
-            m.addAttribute("principle",user);
+            m.addAttribute("principal",user);
             m.addAttribute("message",message);
 
             return "profile";

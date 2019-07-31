@@ -36,10 +36,10 @@ public class HomeController {
     }
 
     @PostMapping(value = "/login")
-    public RedirectView loginUsers(@RequestParam String username, String password, Model m, Principal principle) {
+    public RedirectView loginUsers(@RequestParam String username, String password, Model m, Principal principal) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        m.addAttribute("principle", principle);
+        m.addAttribute("principal", principal);
         return new RedirectView("profile");
     }
 
@@ -51,7 +51,7 @@ public class HomeController {
 
     @GetMapping("/register")
     public String showRegistrationPage(Model m, Principal p, @RequestParam(required = false, defaultValue = "")String error){
-        m.addAttribute("principle", p);
+        m.addAttribute("principal", p);
         m.addAttribute("cities", cities);
         m.addAttribute("error", "potato");
         return "register";
@@ -68,7 +68,7 @@ public class HomeController {
             return "redirect:/discover";
         }else{
             m.addAttribute("error", "notUnique");
-            m.addAttribute("principle", p);
+            m.addAttribute("principal", p);
             return "register";
         }
     }
