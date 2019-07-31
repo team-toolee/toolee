@@ -4,6 +4,7 @@ import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.MessageAttributeValue;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
+import org.hibernate.annotations.GeneratorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,32 +75,49 @@ public class UserController {
 
         return "discover";
     }
-
-    @PostMapping("/discover")
-    public String getToolsForFilteredCity(Model m, Principal p, String city){
-        List<AppUser> usersInCity = userRepository.findByCity(city);
+    /*
+    Testing to implement ajax feature: search based on categories
+     */
+    @GetMapping("/diss")
+    public String testing(Model m, Principal p){
+        AppUser loggedInUser = userRepository.findByUsername(p.getName());
+        List<AppUser> usersInCity = userRepository.findByCity(loggedInUser.getCity());
         List<Tool> toolsInCity = new ArrayList<>();
 
         for(AppUser user: usersInCity){
-            for(Tool tool: user.getTools()){
-                toolsInCity.add(tool);
+            if(!user.getUsername().equals(loggedInUser.getUsername())){
+                for(Tool tool: user.getTools()){
+                    toolsInCity.add(tool);
+                }
             }
         }
 
         m.addAttribute("toolsInCity", toolsInCity);
-        m.addAttribute("principal", p);
-
-        return "discover";
+        m.addAttribute("principle", loggedInUser);
+        /*
+        Add following for ajax search feature
+         */
+        Category[] categories = Category.values();
+        m.addAttribute("categories",categories);
+        return "dis";
     }
 
-    @PostMapping("/contact/{toolSellerId}/{toolId}/{message}")
-    public String contactToolSeller(@PathVariable String toolSellerId, @PathVariable String toolId, @PathVariable String message, Model m, Principal p){
-        long toolSellerIdLong = Long.valueOf(toolSellerId);
-        long toolIdLong = Long.valueOf(toolId);
-        AppUser seller = userRepository.findById(toolSellerIdLong).get();
-        Tool tool = toolRepository.findById(toolIdLong).get();
-        AppUser buyer = userRepository.findByUsername(p.getName());
+    @GetMapping("/contact/seller/{toolId}/")
+    public String contactToolSeller(@PathVariable long sellerId, @PathVariable long toolId, Principal p, Model m){
+        AppUser loggedInUser = userRepository.findByUsername(p.getName());
+        Tool selectedTool = toolRepository.findById(toolId).get();
+        m.addAttribute("tool",selectedTool);
+        m.addAttribute("principle",loggedInUser);
+        return "contactSeller";
+    }
 
+
+
+    @PostMapping("/contact/seller/{toolId}")
+    public String contactToolSeller(@PathVariable Long toolId, @RequestParam String message, Model m, Principal p){
+        Tool tool = toolRepository.findById(toolId).get();
+        AppUser seller = tool.getAppUser();
+        AppUser buyer = userRepository.findByUsername(p.getName());
         configureMessage(seller, buyer, tool, message);
 
         return "redirect:/discover";
