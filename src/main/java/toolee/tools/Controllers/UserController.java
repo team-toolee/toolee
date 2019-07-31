@@ -53,9 +53,8 @@ public class UserController {
         m.addAttribute("status", statuses);
         m.addAttribute("categories", categories);
         m.addAttribute("principle", user);
-        return "profile";
+        return "profile2";
     }
-
 
     @GetMapping("/discover")
     public String getToolsForPrincipleCity(Model m, Principal p){
@@ -80,7 +79,6 @@ public class UserController {
     public String getToolsForFilteredCity(Model m, Principal p, String city){
         List<AppUser> usersInCity = userRepository.findByCity(city);
         List<Tool> toolsInCity = new ArrayList<>();
-
 
         for(AppUser user: usersInCity){
             for(Tool tool: user.getTools()){

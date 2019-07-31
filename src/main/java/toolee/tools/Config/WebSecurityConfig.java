@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 //allow requests to all urls that match the pattern
-                .antMatchers("/", "/register", "/login", "/tool", "/user" ,"/css/*", "/javascript/*", "/img/*").permitAll()
+                .antMatchers("/", "/register", "/login", "/tool", "/user", "/aboutus", "/css/*", "/javascript/*", "/img/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/*.css").permitAll()
                 //anything else you must be logged in
                 .anyRequest().authenticated()
@@ -49,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")
                 .and()
                 .logout()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/login");
+
     }
 
     @Override

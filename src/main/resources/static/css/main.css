@@ -1,3 +1,4 @@
+/*
 body {
     min-height: 100%;
     min-height: 100vh;
@@ -29,7 +30,24 @@ main {
 .mainheader {
   display: flex;
   flex-flow: row wrap;
-  /* This aligns items to the end line on main-axis */
   justify-content: space-evenly;
   margin: 25px 0px 35px 0px;
 }
+
+*/
+
+.navbar {
+	background-color: #232f3e !important;
+	margin-bottom: 25px;
+}
+
+
+footer {
+    background-color: #232f3e !important;
+}
+
+.footerfix {
+    min-height: calc(100vh - 140px)
+}
+
+

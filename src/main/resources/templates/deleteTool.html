@@ -11,7 +11,7 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <main>
-    <h3>Delete Tool</h3>
+    <h3>Are you sure want to delete following tool ?</h3>
     <form action="/tool/{id}/delete" method="post">
         <!--to pass the input across the past page-->
         <input th:value="${delTool.id}" type="hidden" name="id" >
@@ -20,8 +20,8 @@
             <input type="text" th:value="${delTool.name}"  class= "form-control" name="name" id="toolName" readonly>
         </div>
         <div class="form-group">
-            <label for="toolImg">Tool Name</label>
-            <img  th:src="${delTool.imageUrl}" id="toolImg" readonly>
+            <label for="toolImg">Tool Image</label>
+            <img id="toolImg" class="card-img-top" th:src="${delTool.imageUrl}" alt="Card image" readonly>
         </div>
         <div class="form-group">
             <label for="toolPrice">Price</label>

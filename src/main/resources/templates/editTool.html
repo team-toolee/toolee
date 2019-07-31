@@ -41,7 +41,7 @@
         <div class="form-group">
             <label for="toolCategory">Category</label>
             <select class= "form-control" name="category" id="toolCategory" placeholder="Type of the account" required>
-                <option th:each ="category: ${categories}" th:selected="${editTool.category} == ${category} ? true : false" th:text="${category}"></option>
+                <option th:each ="category: ${categories}" th:selected="${editTool.category} == ${category} ? true : false" th:text="${category.getCategoryName()}"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary"> Update </button>
