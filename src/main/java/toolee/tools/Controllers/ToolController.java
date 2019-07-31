@@ -16,8 +16,6 @@ import toolee.tools.Models.Tool;
 import toolee.tools.Repositories.ToolRepository;
 import toolee.tools.Repositories.UserRepository;
 
-import javax.jws.WebParam;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -36,32 +34,16 @@ public class ToolController {
     @Autowired
     ToolController(S3Client s3Client){this.s3Client = s3Client;}
 
-    @GetMapping("/home")
-    public String getHome(Principal p, Model m) {
-        List<Tool> tool = (List) toolRepository.findAll();
-        AppUser user = userRepository.findByUsername(p.getName());
-        m.addAttribute("principal",user);
-        return "home";
-    }
-
-//    @GetMapping("/tool/add")
-//    public String addtool(Principal p, Model m)  {
-//        Status[] statuses = Status.values();
-//        Category[] categories = Category.values();
-//        m.addAttribute("status", statuses);
-//        m.addAttribute("categories", categories);
-//        m.addAttribute("principal", p);
-//        return "createTool";
-//    }
-
     @CrossOrigin
     @PostMapping("/tool/add")
-    public RedirectView addtool(@RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
+    public RedirectView addTool(@RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
 
                                 @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p) throws IOException {
         String imageUrl = this.s3Client.uploadFile(file);
         AppUser user = userRepository.findByUsername(p.getName());
+        category = getEnumName(category);
         Tool newTool = new Tool(name, imageUrl, Double.parseDouble(price), Status.valueOf(status), description, Category.valueOf(category),user);
+
         userRepository.save(user);
         toolRepository.save(newTool);
 
@@ -86,9 +68,9 @@ public class ToolController {
     }
 
     @PostMapping("/tool/{id}/edit")
-    public RedirectView editAccount(@RequestParam Long id, @RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
+    public String editAccount(@RequestParam Long id, @RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
 
-    @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p) throws IOException {
+    @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p, Model m) throws IOException {
         String imageUrl;
         AppUser user = userRepository.findByUsername(p.getName());
         Tool editTool = toolRepository.findById(id).get();
@@ -100,11 +82,19 @@ public class ToolController {
         editTool.setName(name);
         editTool.setPrice(Double.parseDouble(price));
         editTool.setStatus(Status.valueOf(status));
+        category = getEnumName(category);
         editTool.setCategory(Category.valueOf(category));
         editTool.setDescription(description);
         toolRepository.save(editTool);
 
-        return new RedirectView("/profile");
+        String message = "Successfully edited the tool: "+ name;
+        Status[] statuses = Status.values();
+        Category[] categories = Category.values();
+        m.addAttribute("status", statuses);
+        m.addAttribute("categories", categories);
+        m.addAttribute("principle", user);
+        m.addAttribute("message",message);
+        return "profile";
     }
 
     @GetMapping("/tool/{id}/delete")
@@ -118,22 +108,58 @@ public class ToolController {
         return "deleteTool";
     }
     @PostMapping("/tool/{id}/delete")
-    public RedirectView deleteTool(@RequestParam long id, Model m, Principal p,Integer temp){
+    public String deleteTool(@RequestParam long id, Model m, Principal p,Integer temp){
 
             // to display information of selected account to be deleted
             Tool tool = toolRepository.findById(id).get();
-            String message = "Successfully deleted the tool: "+ tool.getName();
             AppUser user = userRepository.findByUsername(p.getName());
-
+            String message = "Successfully deleted the tool: "+ tool.getName();
             toolRepository.delete(tool);
-
-            m.addAttribute("principal",user);
+            Status[] statuses = Status.values();
+            Category[] categories = Category.values();
+            m.addAttribute("status", statuses);
+            m.addAttribute("categories", categories);
+            m.addAttribute("principle",user);
             m.addAttribute("message",message);
 
-
-            return new RedirectView("/profile");
+            return "profile";
 
     }
 
+
+    //Helper method to change string back to enum:
+    public String getEnumName(String userInput){
+        if (userInput.equals("Home Improvement")) {
+            return "HomeImprovement";
+        }
+        if (userInput.equals("Hand Tools")) {
+            return "HandTools";
+        }
+        if (userInput.equals("Power Tools")) {
+            return "PowerTools";
+        }
+        if (userInput.equals("Hardware")) {
+            return "Hardware";
+        }
+        if (userInput.equals("Accessories")) {
+            return "Accessories";
+        }
+        if (userInput.equals("Floor and Surface")) {
+            return "FloorAndSurfaceCare";
+        }
+        if (userInput.equals("Measuring and Marking")) {
+            return "MeasuringAndMarking";
+        }
+        if (userInput.equals("Plumbing")) {
+            return "Plumbing";
+        }
+        if (userInput.equals("Lawn and Garden")) {
+            return "LawnAndGarden";
+        }
+        if (userInput.equals("Miscellaneous")) {
+            return "Miscellaneous";
+        }
+        else return null;
+    }
 
 }
