@@ -36,7 +36,7 @@ public class ToolController {
 
     @CrossOrigin
     @PostMapping("/tool/add")
-    public RedirectView addtool(@RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
+    public RedirectView addTool(@RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
 
                                 @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p) throws IOException {
         String imageUrl = this.s3Client.uploadFile(file);
