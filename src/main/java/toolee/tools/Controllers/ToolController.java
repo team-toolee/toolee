@@ -68,7 +68,7 @@ public class ToolController {
     }
 
     @PostMapping("/tool/{id}/edit")
-    public String editAccount(@RequestParam Long id, @RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
+    public RedirectView editAccount(@RequestParam Long id, @RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
 
     @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p, Model m) throws IOException {
         String imageUrl;
@@ -94,7 +94,9 @@ public class ToolController {
         m.addAttribute("categories", categories);
         m.addAttribute("principal", user);
         m.addAttribute("message",message);
-        return "profile";
+
+        return new RedirectView("/profile");
+
     }
 
     @GetMapping("/tool/{id}/delete")
@@ -108,22 +110,22 @@ public class ToolController {
         return "deleteTool";
     }
     @PostMapping("/tool/{id}/delete")
-    public String deleteTool(@RequestParam long id, Model m, Principal p,Integer temp){
+    public RedirectView deleteTool(@RequestParam long id, Model m, Principal p,Integer temp){
 
-            // to display information of selected account to be deleted
-            Tool tool = toolRepository.findById(id).get();
-            AppUser user = userRepository.findByUsername(p.getName());
-            String message = "Successfully deleted the tool: "+ tool.getName();
-            toolRepository.delete(tool);
-            Status[] statuses = Status.values();
-            Category[] categories = Category.values();
-            m.addAttribute("status", statuses);
-            m.addAttribute("categories", categories);
-            m.addAttribute("principal",user);
-            m.addAttribute("message",message);
+        // to display information of selected account to be deleted
+        Tool tool = toolRepository.findById(id).get();
+        AppUser user = userRepository.findByUsername(p.getName());
+        String message = "Successfully deleted the tool: "+ tool.getName();
+        toolRepository.delete(tool);
 
-            return "profile";
+        Status[] statuses = Status.values();
+        Category[] categories = Category.values();
+        m.addAttribute("status", statuses);
+        m.addAttribute("categories", categories);
+        m.addAttribute("principal",user);
+        m.addAttribute("message",message);
 
+        return new RedirectView("/profile");
     }
 
 
