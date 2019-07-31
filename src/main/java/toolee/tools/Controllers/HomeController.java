@@ -30,7 +30,8 @@ public class HomeController {
 
 
     @GetMapping("/login")
-    public String getLoginPage() {
+    public String getLoginPage(Model m) {
+        m.addAttribute("cities", cities);
         return "login";
     }
 
