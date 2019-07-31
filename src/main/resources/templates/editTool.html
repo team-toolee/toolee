@@ -42,12 +42,12 @@
             <div class="form-group">
                 <label for="toolCategory">Category</label>
                 <select class= "form-control" name="category" id="toolCategory" placeholder="Type of the account" required>
-                    <option th:each ="category: ${categories}" th:selected="${editTool.category} == ${category} ? true : false" th:text="${category.getCategoryName()}"></option>
+                    <option th:each ="category: ${categories}" th:selected="${editTool.category.getCategoryName()} == ${category.getCategoryName()} ? true : false" th:text="${category.getCategoryName()} " th:value="${category.getCategoryName()}"></option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary"> Update </button>
-            <a th:href="@{'/tool/' + ${editTool.id} + '/delete'}"><button class="btn btn-danger">Delete Tool</button></a>
         </form>
+        <a th:href="'/tool/' + ${editTool.id} + '/delete'"><button class="btn btn-danger">Delete Tool</button></a>
         <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <script type="text/javascript" src="/javascript/style.js"></script>
