@@ -16,8 +16,6 @@ import toolee.tools.Models.Tool;
 import toolee.tools.Repositories.ToolRepository;
 import toolee.tools.Repositories.UserRepository;
 
-import javax.jws.WebParam;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -61,7 +59,9 @@ public class ToolController {
                                 @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p) throws IOException {
         String imageUrl = this.s3Client.uploadFile(file);
         AppUser user = userRepository.findByUsername(p.getName());
+        category = getEnumName(category);
         Tool newTool = new Tool(name, imageUrl, Double.parseDouble(price), Status.valueOf(status), description, Category.valueOf(category),user);
+
         userRepository.save(user);
         toolRepository.save(newTool);
 
@@ -100,6 +100,7 @@ public class ToolController {
         editTool.setName(name);
         editTool.setPrice(Double.parseDouble(price));
         editTool.setStatus(Status.valueOf(status));
+        category = getEnumName(category);
         editTool.setCategory(Category.valueOf(category));
         editTool.setDescription(description);
         toolRepository.save(editTool);
@@ -135,5 +136,40 @@ public class ToolController {
 
     }
 
+
+    //Helper method to change string back to enum:
+    public String getEnumName(String userInput){
+        if (userInput.equals("Home Improvement")) {
+            return "HomeImprovement";
+        }
+        if (userInput.equals("Hand Tools")) {
+            return "HandTools";
+        }
+        if (userInput.equals("Power Tools")) {
+            return "PowerTools";
+        }
+        if (userInput.equals("Hardware")) {
+            return "Hardware";
+        }
+        if (userInput.equals("Accessories")) {
+            return "Accessories";
+        }
+        if (userInput.equals("Floor and Surface")) {
+            return "FloorAndSurface";
+        }
+        if (userInput.equals("Measuring and Marking")) {
+            return "MeasuringAndMarking";
+        }
+        if (userInput.equals("Plumbing")) {
+            return "Plumbing";
+        }
+        if (userInput.equals("Lawn and Garden")) {
+            return "LawnAndGarden";
+        }
+        if (userInput.equals("Miscellaneous")) {
+            return "Miscellaneous";
+        }
+        else return null;
+    }
 
 }

@@ -29,6 +29,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'
+
+	compile 'com.github.derjust:spring-data-dynamodb:5.1.0'
+	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.585'
 	//rds postgres dependency
 	runtimeOnly 'org.postgresql:postgresql'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'

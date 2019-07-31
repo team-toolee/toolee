@@ -95,7 +95,6 @@ public class UserController {
         List<AppUser> usersInCity = userRepository.findByCity(city);
         List<Tool> toolsInCity = new ArrayList<>();
 
-
         for(AppUser user: usersInCity){
             for(Tool tool: user.getTools()){
                 toolsInCity.add(tool);

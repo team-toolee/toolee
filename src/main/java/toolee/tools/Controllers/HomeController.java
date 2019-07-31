@@ -28,6 +28,7 @@ public class HomeController {
      public String[] cities = {"Seattle", "Spokane","Tacoma", "Vancouver","Bellevue", "Kent", "Everett", "Renton", "Federal Way", "Kirkland",
            "Auburn", "Shoreline"};
 
+
     @GetMapping("/login")
     public String getLoginPage(Model m) {
         m.addAttribute("cities", cities);
@@ -70,6 +71,11 @@ public class HomeController {
             m.addAttribute("principle", p);
             return "register";
         }
+    }
+
+    @GetMapping("/aboutus")
+    public String aboutUsHandler(){
+        return "aboutUs";
     }
 
 
