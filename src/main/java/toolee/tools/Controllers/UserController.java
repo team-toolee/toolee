@@ -57,20 +57,6 @@ public class UserController {
     }
 
 
-    @PutMapping("tool/status/{id}")
-    public String updateStatus(@PathVariable Long id, Model m, Principal principle){
-        Optional<Tool> tool = toolRepository.findById(id);
-
-        if(tool.get().getStatus() == Status.Available){
-            tool.get().setStatus(Status.Rented);
-        }
-        else{
-            tool.get().setStatus(Status.Available);
-        }
-        toolRepository.save(tool.get());
-        return "profile";
-    }
-
     @GetMapping("/discover")
     public String getToolsForPrincipleCity(Model m, Principal p){
         AppUser loggedInUser = userRepository.findByUsername(p.getName());

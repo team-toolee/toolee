@@ -36,24 +36,6 @@ public class ToolController {
     @Autowired
     ToolController(S3Client s3Client){this.s3Client = s3Client;}
 
-    @GetMapping("/home")
-    public String getHome(Principal p, Model m) {
-        List<Tool> tool = (List) toolRepository.findAll();
-        AppUser user = userRepository.findByUsername(p.getName());
-        m.addAttribute("principal",user);
-        return "home";
-    }
-
-//    @GetMapping("/tool/add")
-//    public String addtool(Principal p, Model m)  {
-//        Status[] statuses = Status.values();
-//        Category[] categories = Category.values();
-//        m.addAttribute("status", statuses);
-//        m.addAttribute("categories", categories);
-//        m.addAttribute("principal", p);
-//        return "createTool";
-//    }
-
     @CrossOrigin
     @PostMapping("/tool/add")
     public RedirectView addtool(@RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
@@ -86,9 +68,9 @@ public class ToolController {
     }
 
     @PostMapping("/tool/{id}/edit")
-    public RedirectView editAccount(@RequestParam Long id, @RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
+    public String editAccount(@RequestParam Long id, @RequestParam String name, @RequestPart(value = "file")MultipartFile file, @RequestParam String price,
 
-    @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p) throws IOException {
+    @RequestParam String status, @RequestParam String description, @RequestParam String category, Principal p, Model m) throws IOException {
         String imageUrl;
         AppUser user = userRepository.findByUsername(p.getName());
         Tool editTool = toolRepository.findById(id).get();
@@ -104,7 +86,14 @@ public class ToolController {
         editTool.setDescription(description);
         toolRepository.save(editTool);
 
-        return new RedirectView("/profile");
+        String message = "Successfully edited the tool: "+ name;
+        Status[] statuses = Status.values();
+        Category[] categories = Category.values();
+        m.addAttribute("status", statuses);
+        m.addAttribute("categories", categories);
+        m.addAttribute("principle", user);
+        m.addAttribute("message",message);
+        return "profile";
     }
 
     @GetMapping("/tool/{id}/delete")
@@ -115,22 +104,22 @@ public class ToolController {
         AppUser user = userRepository.findByUsername(p.getName());
         m.addAttribute("principal", user);
         m.addAttribute("delTool", tool);
-        return "deleteAccount";
+        return "deleteTool";
     }
     @PostMapping("/tool/{id}/delete")
     public String deleteTool(@RequestParam long id, Model m, Principal p,Integer temp){
         try{
             // to display information of selected account to be deleted
             Tool tool = toolRepository.findById(id).get();
-            String message = "Successfully deleted the tool: "+ tool.getName();
             AppUser user = userRepository.findByUsername(p.getName());
-
+            String message = "Successfully deleted the tool: "+ tool.getName();
             toolRepository.delete(tool);
-
-            m.addAttribute("principal",user);
+            Status[] statuses = Status.values();
+            Category[] categories = Category.values();
+            m.addAttribute("status", statuses);
+            m.addAttribute("categories", categories);
+            m.addAttribute("principle",user);
             m.addAttribute("message",message);
-
-
             return "profile";
         } catch (Exception error){
             return "An error has occurred: " + error;
