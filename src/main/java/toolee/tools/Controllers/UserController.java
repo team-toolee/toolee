@@ -74,10 +74,37 @@ public class UserController {
 
         return "discover";
     }
+    /*
+    Testing to implement ajax feature: search based on categories
+     */
+    @GetMapping("/diss")
+    public String testing(Model m, Principal p){
+        AppUser loggedInUser = userRepository.findByUsername(p.getName());
+        List<AppUser> usersInCity = userRepository.findByCity(loggedInUser.getCity());
+        List<Tool> toolsInCity = new ArrayList<>();
+
+        for(AppUser user: usersInCity){
+            if(!user.getUsername().equals(loggedInUser.getUsername())){
+                for(Tool tool: user.getTools()){
+                    toolsInCity.add(tool);
+                }
+            }
+        }
+
+        m.addAttribute("toolsInCity", toolsInCity);
+        m.addAttribute("principle", p);
+        /*
+        Add following for ajax search feature
+         */
+        Category[] categories = Category.values();
+        m.addAttribute("categories",categories);
+        return "dis";
+    }
 
     @PostMapping("/discover")
     public String getToolsForFilteredCity(Model m, Principal p, String city){
-        List<AppUser> usersInCity = userRepository.findByCity(city);
+        AppUser appUser = userRepository.findByUsername(p.getName());
+        List<AppUser> usersInCity = userRepository.findByCity(appUser.getCity());
         List<Tool> toolsInCity = new ArrayList<>();
 
         for(AppUser user: usersInCity){
