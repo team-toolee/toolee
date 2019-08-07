@@ -25,6 +25,7 @@ public class HomeController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    // List of all the current cities
      public String[] cities = {"Seattle", "Spokane","Tacoma", "Vancouver","Bellevue", "Kent", "Everett", "Renton", "Federal Way", "Kirkland",
            "Auburn", "Shoreline"};
 
